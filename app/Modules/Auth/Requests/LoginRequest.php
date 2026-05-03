@@ -2,15 +2,15 @@
 
 namespace App\Modules\Auth\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use App\Http\Requests\BaseRequest;
+
 class LoginRequest extends BaseRequest
 {
-    public function rules()
+    public function rules(): array
     {
         return [
-            'email' => 'required|email|exists:users,email',
-            'password' => 'required|min:6'
+            'email' => ['required', 'email'],
+            'password' => ['required'],
         ];
     }
 }

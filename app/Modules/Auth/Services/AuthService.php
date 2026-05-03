@@ -4,60 +4,70 @@ namespace App\Modules\Auth\Services;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-use App\Helpers\ApiResponse;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Validation\ValidationException;
 use App\Modules\Auth\DTOs\RegisterDTO;
 use App\Modules\Auth\DTOs\LoginDTO;
 
 class AuthService
 {
-    public function register(RegisterDTO $dto)
+    public function register(RegisterDTO $dto): array
     {
-        $user = User::create([
-            'name' => $dto->name,
-            'email' => $dto->email,
-            'password' => Hash::make($dto->password),
-        ]);
+      $user = User::create([
+    'email' => $dto->email,
+    'password' => $dto->password,
+    'role' => 'patient',
+]);
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
-        return ApiResponse::success([
+        return [
             'user' => $user,
-            'token' => $token
-        ], 'User registered successfully');
+            'token' => $token,
+        ];
     }
 
-    public function login(LoginDTO $dto)
+    public function login(LoginDTO $dto): array
     {
-        $user = User::where('email', $dto->email)->first();
-
-        if (!$user || !Hash::check($dto->password, $user->password)) {
-            return ApiResponse::error('Invalid credentials', 401);
+        if (!Auth::attempt([
+            'email' => $dto->email,
+            'password' => $dto->password
+        ])) {
+            throw ValidationException::withMessages([
+                'email' => ['Invalid credentials'],
+            ]);
         }
 
+        $user = Auth::user();
+
+  
+        $user->tokens()->delete();
+
         $token = $user->createToken('auth_token')->plainTextToken;
 
-        return ApiResponse::success([
+        return [
             'user' => $user,
-            'token' => $token
-        ], 'Login successful');
+            'token' => $token,
+        ];
     }
 
-    public function logout($user)
+    public function logout($user): void
     {
-         if (!$user) {
-        return ApiResponse::error('Unauthenticated', 401);
+        $user->currentAccessToken()->delete();
     }
+
+    public function refreshToken($user): string
+    {
+   
         $user->currentAccessToken()->delete();
 
-        return ApiResponse::success(null, 'Logged out successfully');
+  
+        return $user->createToken('auth_token')->plainTextToken;
     }
 
-    public function me($user)
+    public function forgotPassword(string $email): void
     {
-
-     if (!$user) {
-        return ApiResponse::error('Unauthenticated', 401);
-    }
-        return ApiResponse::success($user, 'User profile');
+        Password::sendResetLink(['email' => $email]);
     }
 }

@@ -4,13 +4,12 @@ namespace App\Modules\Auth\Requests;
 
 use App\Http\Requests\BaseRequest;
 
-class RegisterRequest extends BaseRequest
+class ForgotPasswordRequest extends BaseRequest
 {
     public function rules(): array
     {
         return [
-            'email' => ['required', 'email', 'unique:users,email'],
-            'password' => ['required', 'min:6'],
+            'email' => ['required', 'email', 'exists:users,email'],
         ];
     }
 }

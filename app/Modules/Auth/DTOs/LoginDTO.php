@@ -9,11 +9,11 @@ class LoginDTO
         public string $password
     ) {}
 
-    public static function fromRequest($request): self
+    public static function fromArray(array $data): self
     {
         return new self(
-            $request->email,
-            $request->password
+            email: $data['email'],
+            password: $data['password']
         );
     }
 }
