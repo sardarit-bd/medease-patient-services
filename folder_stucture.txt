@@ -1,0 +1,105 @@
+med_ease/
+├─ app/
+│  ├─ Exceptions/
+│  │  └─ Handler.php
+│  ├─ Helpers/
+│  │  └─ ApiResponse.php
+│  ├─ Http/
+│  │  ├─ Controllers/
+│  │  │  └─ Controller.php
+│  │  └─ Requests/
+│  │     └─ BaseRequest.php
+│  ├─ Models/
+│  │  └─ User.php
+│  ├─ Modules/
+│  │  ├─ Auth/
+│  │  │  ├─ Controllers/
+│  │  │  │  └─ AuthController.php
+│  │  │  ├─ DTOs/
+│  │  │  │  ├─ LoginDTO.php
+│  │  │  │  └─ RegisterDTO.php
+│  │  │  ├─ Requests/
+│  │  │  │  ├─ LoginRequest.php
+│  │  │  │  └─ RegisterRequest.php
+│  │  │  ├─ Routes/
+│  │  │  │  └─ api.php
+│  │  │  └─ Services/
+│  │  │     └─ AuthService.php
+│  │  └─ User/
+│  │     ├─ Controllers/
+│  │     │  └─ UserController.php
+│  │     ├─ DTOs/
+│  │     │  ├─ Createuserdto.php
+│  │     │  └─ Updateuserdto.php
+│  │     ├─ Requests/
+│  │     │  ├─ Createuserrequest.php
+│  │     │  └─ Updateuserrequest.php
+│  │     ├─ Routes/
+│  │     │  └─ api.php
+│  │     └─ Services/
+│  │        └─ UserService.php
+│  └─ Providers/
+│     └─ AppServiceProvider.php
+├─ bootstrap/
+│  ├─ app.php
+│  └─ providers.php
+├─ config/
+│  ├─ app.php
+│  ├─ auth.php
+│  ├─ cache.php
+│  ├─ database.php
+│  ├─ filesystems.php
+│  ├─ logging.php
+│  ├─ mail.php
+│  ├─ queue.php
+│  ├─ sanctum.php
+│  ├─ services.php
+│  └─ session.php
+├─ database/
+│  ├─ factories/
+│  │  └─ UserFactory.php
+│  ├─ migrations/
+│  │  ├─ 0001_01_01_000000_create_users_table.php
+│  │  ├─ 0001_01_01_000001_create_cache_table.php
+│  │  ├─ 0001_01_01_000002_create_jobs_table.php
+│  │  └─ 2026_04_18_134329_create_personal_access_tokens_table.php
+│  ├─ seeders/
+│  │  └─ DatabaseSeeder.php
+│  └─ .gitignore
+├─ public/
+│  ├─ .htaccess
+│  ├─ favicon.ico
+│  ├─ index.php
+│  └─ robots.txt
+├─ resources/
+│  ├─ css/
+│  │  └─ app.css
+│  ├─ js/
+│  │  └─ app.js
+│  └─ views/
+│     └─ welcome.blade.php
+├─ routes/
+│  ├─ api.php
+│  ├─ console.php
+│  └─ web.php
+├─ storage/
+│  └─ framework/
+│     └─ .gitignore
+├─ tests/
+│  ├─ Feature/
+│  │  └─ ExampleTest.php
+│  ├─ Unit/
+│  │  └─ ExampleTest.php
+│  └─ TestCase.php
+├─ .editorconfig
+├─ .env.example
+├─ .gitattributes
+├─ .gitignore
+├─ .npmrc
+├─ artisan
+├─ composer.json
+├─ composer.lock
+├─ package.json
+├─ phpunit.xml
+├─ README.md
+└─ vite.config.js
