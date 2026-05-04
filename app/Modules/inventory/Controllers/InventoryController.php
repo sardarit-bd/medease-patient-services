@@ -1,52 +1,21 @@
 <?php
 
-namespace App\Modules\User\Controllers;
+namespace App\Modules\inventory\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Helpers\ApiResponse;
 use Illuminate\Http\Request;
-use App\Modules\User\Services\UserService;
-use App\Modules\User\Requests\UpdateProfileRequest;
-use App\Modules\User\Requests\UploadPhotoRequest;
-use App\Modules\User\DTOs\UpdateProfileDTO;
+use App\Modules\inventory\Services\InventoryService;
 
-class UserController extends Controller
+class InventoryController extends Controller
 {
-    public function __construct(private UserService $service) {}
+    public function __construct(private InventoryService $service) {}
 
-    public function getProfile(Request $request)
+  
+    public function stock(Request $request)
     {
-        $profile = $this->service->getProfile($request->user());
+        $data = $this->service->stock($request->user());
 
-        return ApiResponse::success($profile, 'Profile fetched successfully');
-    }
-
-    public function updateProfile(UpdateProfileRequest $request)
-    {
-        $dto     = UpdateProfileDTO::fromArray($request->validated());
-        $profile = $this->service->updateProfile($request->user(), $dto);
-
-        return ApiResponse::success($profile, 'Profile updated successfully');
-    }
-
-    public function uploadPhoto(UploadPhotoRequest $request)
-    {
-        $profile = $this->service->uploadPhoto($request->user(), $request->file('photo'));
-
-        return ApiResponse::success($profile, 'Photo uploaded successfully');
-    }
-
-    public function softDelete(Request $request)
-    {
-        $this->service->softDeleteAccount($request->user());
-
-        return ApiResponse::success(null, 'Account deactivated successfully');
-    }
-
-    public function hardDelete(Request $request)
-    {
-        $this->service->hardDeleteAccount($request->user());
-
-        return ApiResponse::success(null, 'Account permanently deleted');
+        return ApiResponse::success($data, 'Stock fetched successfully');
     }
 }

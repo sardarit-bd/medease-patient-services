@@ -1,70 +1,69 @@
 <?php
 
-namespace App\Modules\User\Services;
+namespace App\Modules\inventory\Services;
 
 use App\Models\User;
 use App\Models\PatientProfile;
-use App\Modules\User\DTOs\UpdateProfileDTO;
-use Illuminate\Support\Facades\Storage;
+use App\Models\MedicationStock;
+use Carbon\Carbon;
 
-class UserService
+class InventoryService
 {
 
-    public function getProfile(User $user): ?PatientProfile
+    private function getPatient(User $user): ?PatientProfile
     {
         return PatientProfile::where('user_id', $user->id)->first();
     }
 
 
-    public function updateProfile(User $user, UpdateProfileDTO $dto): PatientProfile
+    public function stock(User $user): array
     {
-        $profile = PatientProfile::updateOrCreate(
-            ['user_id' => $user->id],  
-            $dto->toArray()             
-        );
+        $patient = $this->getPatient($user);
 
-        return $profile->fresh();
-    }
-
-
-    public function uploadPhoto(User $user, $file): PatientProfile
-    {
-        $profile = PatientProfile::firstOrNew(['user_id' => $user->id]);
-
-    
-        if ($profile->photo_url) {
-            $oldPath = str_replace('/storage/', 'public/', $profile->photo_url);
-            Storage::delete($oldPath);
+        if (!$patient) {
+            return [
+                'low_stock_count' => 0,
+                'expired_count'   => 0,
+                'stock'           => [],
+            ];
         }
 
-        $path = $file->store("public/profile-photos/{$user->id}");
-        $url  = Storage::url($path);
+        $today = Carbon::today();
 
-        $profile->photo_url = $url;
-        $profile->save();
+        $stocks = MedicationStock::where('patient_id', $patient->id)
+            ->with('medication:id,name,form,dosage')
+            ->get();
 
-        return $profile->fresh();
-    }
+        $lowStockCount = 0;
+        $expiredCount  = 0;
 
+        $stockList = $stocks->map(function ($stock) use ($today, &$lowStockCount, &$expiredCount) {
+            $isLowStock = $stock->current_quantity < $stock->low_stock_threshold;
+            $isExpired  = $stock->expiry_date && Carbon::parse($stock->expiry_date)->lt($today);
 
-    public function softDeleteAccount(User $user): void
-    {
-        $user->tokens()->delete();
-        $user->delete();
-    }
+            if ($isLowStock) $lowStockCount++;
+            if ($isExpired)  $expiredCount++;
 
- 
-    public function hardDeleteAccount(User $user): void
-    {
-        $user->tokens()->delete();
+            return [
+                'id'                  => $stock->id,
+                'medication_id'       => $stock->medication_id,
+                'medication_name'     => $stock->medication?->name,
+                'medication_form'     => $stock->medication?->form,
+                'medication_dosage'   => $stock->medication?->dosage,
+                'current_quantity'    => $stock->current_quantity,
+                'unit'                => $stock->unit,
+                'low_stock_threshold' => $stock->low_stock_threshold,
+                'expiry_date'         => $stock->expiry_date,
+                'is_low_stock'        => $isLowStock,
+                'is_expired'          => $isExpired,
+                'last_updated'        => $stock->last_updated,
+            ];
+        })->values()->toArray();
 
-        $profile = PatientProfile::where('user_id', $user->id)->first();
-
-        if ($profile && $profile->photo_url) {
-            $oldPath = str_replace('/storage/', 'public/', $profile->photo_url);
-            Storage::delete($oldPath);
-        }
-
-        $user->forceDelete();
+        return [
+            'low_stock_count' => $lowStockCount,
+            'expired_count'   => $expiredCount,
+            'stock'           => $stockList,
+        ];
     }
 }
