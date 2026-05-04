@@ -9,7 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('medication_intake_log', function (Blueprint $table) {
-            $table->uuid('id')->primary()->default(DB::raw('gen_random_uuid()'));
+            $table->uuid('id')->primary();
 
             $table->uuid('schedule_id');
             $table->foreign('schedule_id')
@@ -21,26 +21,21 @@ return new class extends Migration
                   ->references('id')->on('patient_profiles')
                   ->onDelete('cascade');
 
-            $table->timestamp('scheduled_at');      
-            $table->timestamp('taken_at')->nullable(); 
+            $table->timestamp('scheduled_at');           
+            $table->timestamp('taken_at')->nullable();   
 
-            $table->enum('status', [
-                'taken',    
-                'missed',   
-                'delayed',  
-                'skipped'   
-            ]);
-           
+            $table->string('status', 20);
+
 
             $table->text('notes')->nullable();
 
-            $table->timestamps();   
-           
+            $table->timestamps(); 
+    
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('medication_intake_log'); 
+        Schema::dropIfExists('medication_intake_log');
     }
 };

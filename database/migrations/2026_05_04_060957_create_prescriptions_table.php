@@ -9,7 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('prescriptions', function (Blueprint $table) {
-            $table->uuid('id')->primary()->default(DB::raw('gen_random_uuid()'));
+            $table->uuid('id')->primary();
 
             $table->uuid('patient_id');
             $table->foreign('patient_id')
@@ -22,18 +22,18 @@ return new class extends Migration
                   ->onDelete('set null');
 
             $table->date('issued_date');
-            $table->date('renewal_date')->nullable();   
+            $table->date('renewal_date')->nullable();     // "renouvellement dans 8 jours"
             $table->boolean('is_active')->default(true);
-            $table->string('document_url', 500)->nullable(); 
+            $table->string('document_url', 500)->nullable(); // PDF scan
             $table->text('notes')->nullable();
 
-            $table->timestamps();       
-            $table->softDeletes();      
+            $table->timestamps();    // created_at, updated_at
+            $table->softDeletes();   // deleted_at (soft delete)
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('prescriptions'); // hard delete on rollback
+        Schema::dropIfExists('prescriptions');
     }
 };

@@ -9,7 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('medication_schedule', function (Blueprint $table) {
-            $table->uuid('id')->primary()->default(DB::raw('gen_random_uuid()'));
+            $table->uuid('id')->primary();
 
             $table->uuid('medication_id');
             $table->foreign('medication_id')
@@ -21,29 +21,25 @@ return new class extends Migration
                   ->references('id')->on('patient_profiles')
                   ->onDelete('cascade');
 
-            $table->time('time_of_day');            
-            $table->enum('moment', [
-                'morning',
-                'noon',
-                'evening',
-                'night'
-            ])->nullable();   
+            $table->time('time_of_day');  
+            $table->string('moment', 20)->nullable();
 
-            $table->float('quantity');            
+
+            $table->float('quantity');    
             $table->string('unit', 50)->nullable();
-          
-            $table->text('instruction')->nullable();
-     
-            $table->jsonb('days')->default('[]');
-       
 
-            $table->timestamps();   
-            $table->softDeletes();  
+            $table->text('instruction')->nullable();
+  
+            $table->json('days')->nullable();
+
+
+            $table->timestamps();    
+            $table->softDeletes();   
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('medication_schedule'); 
+        Schema::dropIfExists('medication_schedule');
     }
 };
