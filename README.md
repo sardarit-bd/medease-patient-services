@@ -38,7 +38,7 @@ app/
 
 - PHP >= 8.3
 - Composer >= 2.x
-- SQLite (local) or MySQL >= 8.0 (production)
+- SQLite (local) or MySQL >= 8.0
 
 ---
 
@@ -47,8 +47,8 @@ app/
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/shahinsamiur/laravel_stater_template
-cd laravel_stater_template
+git clone hhttps://github.com/sardarit-bd/medease-patient-services
+cd medease-patient-services
 ```
 
 ### 2. Install dependencies
@@ -133,7 +133,7 @@ Accept: application/json
 
 ## Notes
 
-- Always send requests with `Content-Type: application/json`
+- Always send requests with `Content-Type: application/json` and `Accept: application/json`
 - Use **raw JSON** body — not `form-data` — for all requests
 - All IDs are UUIDs
 - Soft deleted records are excluded from all queries by default
