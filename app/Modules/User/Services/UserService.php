@@ -3,47 +3,67 @@
 namespace App\Modules\User\Services;
 
 use App\Models\User;
-use App\Modules\User\DTOs\CreateUserDTO;
-use App\Modules\User\DTOs\UpdateUserDTO;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Facades\Hash;
+use App\Modules\PatientProfile;
+use App\Modules\User\DTOs\UpdateProfileDTO;
+use Illuminate\Support\Facades\Storage;
 
 class UserService
 {
-    public function getAll(): Collection
+    public function getProfile(User $user): PatientProfile
     {
-        return User::all();
+        return PatientProfile::firstOrCreate(
+            ['user_id' => $user->id]
+        );
     }
 
-    public function findOrFail(int $id): User
+    public function updateProfile(User $user, UpdateProfileDTO $dto): PatientProfile
     {
-        return User::findOrFail($id);
+        $profile = PatientProfile::firstOrCreate(
+            ['user_id' => $user->id]
+        );
+
+        $profile->update($dto->toArray());
+
+        return $profile->fresh();
     }
 
-    public function create(CreateUserDTO $dto): User
+    public function uploadPhoto(User $user, $file): PatientProfile
     {
-        return User::create([
-            'name'     => $dto->name,
-            'email'    => $dto->email,
-            'password' => Hash::make($dto->password),
-        ]);
+        $profile = PatientProfile::firstOrCreate(
+            ['user_id' => $user->id]
+        );
+
+        // Delete old photo if exists
+        if ($profile->photo_url) {
+            $oldPath = str_replace('/storage/', 'public/', $profile->photo_url);
+            Storage::delete($oldPath);
+        }
+
+        $path = $file->store("public/profile-photos/{$user->id}");
+        $url  = Storage::url($path);
+
+        $profile->update(['photo_url' => $url]);
+
+        return $profile->fresh();
     }
 
-    public function update(int $id, UpdateUserDTO $dto): User
+    public function softDeleteAccount(User $user): void
     {
-        $user = User::findOrFail($id);
-
-        $user->update(array_filter([
-            'name'     => $dto->name,
-            'email'    => $dto->email,
-            'password' => $dto->password ? Hash::make($dto->password) : null,
-        ]));
-
-        return $user->fresh();
+        $user->tokens()->delete();
+        $user->delete(); // soft delete because SoftDeletes trait is used
     }
 
-    public function delete(int $id): void
+    public function hardDeleteAccount(User $user): void
     {
-        User::findOrFail($id)->delete();
+        $user->tokens()->delete();
+
+        $profile = $user->patientProfile;
+
+        if ($profile && $profile->photo_url) {
+            $oldPath = str_replace('/storage/', 'public/', $profile->photo_url);
+            Storage::delete($oldPath);
+        }
+
+        $user->forceDelete();
     }
 }

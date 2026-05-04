@@ -2,53 +2,51 @@
 
 namespace App\Modules\User\Controllers;
 
-use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
-use App\Modules\User\DTOs\CreateUserDTO;
-use App\Modules\User\DTOs\UpdateUserDTO;
-use App\Modules\User\Requests\CreateUserRequest;
-use App\Modules\User\Requests\UpdateUserRequest;
+use App\Helpers\ApiResponse;
+use Illuminate\Http\Request;
 use App\Modules\User\Services\UserService;
-use Illuminate\Http\JsonResponse;
+use App\Modules\User\Requests\UpdateProfileRequest;
+use App\Modules\User\Requests\UploadPhotoRequest;
+use App\Modules\User\DTOs\UpdateProfileDTO;
 
 class UserController extends Controller
 {
-    public function __construct(private UserService $userService) {}
+    public function __construct(private UserService $service) {}
 
-    public function index(): JsonResponse
+    public function getProfile(Request $request)
     {
-        $users = $this->userService->getAll();
+        $profile = $this->service->getProfile($request->user());
 
-        return ApiResponse::success($users, 'Users retrieved successfully');
+        return ApiResponse::success($profile, 'Profile fetched successfully');
     }
 
-    public function show(int $id): JsonResponse
+    public function updateProfile(UpdateProfileRequest $request)
     {
-        $user = $this->userService->findOrFail($id);
+        $dto     = UpdateProfileDTO::fromArray($request->validated());
+        $profile = $this->service->updateProfile($request->user(), $dto);
 
-        return ApiResponse::success($user, 'User retrieved successfully');
+        return ApiResponse::success($profile, 'Profile updated successfully');
     }
 
-    public function store(CreateUserRequest $request): JsonResponse
+    public function uploadPhoto(UploadPhotoRequest $request)
     {
-        $dto  = CreateUserDTO::fromRequest((object) $request->validated());
-        $user = $this->userService->create($dto);
+        $profile = $this->service->uploadPhoto($request->user(), $request->file('photo'));
 
-        return ApiResponse::success($user, 'User created successfully', 201);
+        return ApiResponse::success($profile, 'Photo uploaded successfully');
     }
 
-    public function update(UpdateUserRequest $request, int $id): JsonResponse
+    public function softDelete(Request $request)
     {
-        $dto  = UpdateUserDTO::fromRequest((object) $request->validated());
-        $user = $this->userService->update($id, $dto);
+        $this->service->softDeleteAccount($request->user());
 
-        return ApiResponse::success($user, 'User updated successfully');
+        return ApiResponse::success(null, 'Account deactivated successfully');
     }
 
-    public function destroy(int $id): JsonResponse
+    public function hardDelete(Request $request)
     {
-        $this->userService->delete($id);
+        $this->service->hardDeleteAccount($request->user());
 
-        return ApiResponse::success(null, 'User deleted successfully');
+        return ApiResponse::success(null, 'Account permanently deleted');
     }
 }
