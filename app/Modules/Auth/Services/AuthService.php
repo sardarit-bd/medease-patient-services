@@ -17,7 +17,7 @@ class AuthService
       $user = User::create([
     'email' => $dto->email,
     'password' => $dto->password,
-    'role' => 'patient',
+    'role' => $dto->role,
 ]);
 
         $token = $user->createToken('auth_token')->plainTextToken;
@@ -25,6 +25,7 @@ class AuthService
         return [
             'user' => $user,
             'token' => $token,
+            'role' => $dto->role,
         ];
     }
 
