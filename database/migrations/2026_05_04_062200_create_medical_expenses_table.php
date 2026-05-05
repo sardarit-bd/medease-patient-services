@@ -13,28 +13,26 @@ return new class extends Migration
 
             $table->uuid('patient_id');
             $table->foreign('patient_id')
-                  ->references('id')->on('patient_profiles')
-                  ->onDelete('cascade');
+                ->references('id')->on('patient_profiles')
+                ->onDelete('cascade');
 
             $table->uuid('prescription_id')->nullable();
             $table->foreign('prescription_id')
-                  ->references('id')->on('prescriptions')
-                  ->onDelete('set null');
+                ->references('id')->on('prescriptions')
+                ->onDelete('set null');
 
             $table->string('label', 255)->nullable();
-        
-            $table->string('category', 100)->nullable();
-   
 
-            $table->float('amount');                       
-            $table->float('reimbursed')->default(0);        
+            $table->string('category', 100)->nullable();
+
+            $table->float('amount');
+            $table->float('reimbursed')->default(0);
             $table->float('remaining_charge')->nullable();
-  
 
             $table->date('expense_date');
 
-            $table->timestamps();    
-            $table->softDeletes();  
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 

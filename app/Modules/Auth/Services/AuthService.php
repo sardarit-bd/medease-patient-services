@@ -3,22 +3,21 @@
 namespace App\Modules\Auth\Services;
 
 use App\Models\User;
-use Illuminate\Support\Facades\Hash;
+use App\Modules\Auth\DTOs\LoginDTO;
+use App\Modules\Auth\DTOs\patientRegisterDTO;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Validation\ValidationException;
-use App\Modules\Auth\DTOs\RegisterDTO;
-use App\Modules\Auth\DTOs\LoginDTO;
 
 class AuthService
 {
-    public function register(RegisterDTO $dto): array
+    public function register(patientRegisterDTO $dto): array
     {
-      $user = User::create([
-    'email' => $dto->email,
-    'password' => $dto->password,
-    'role' => $dto->role,
-]);
+        $user = User::create([
+            'email' => $dto->email,
+            'password' => $dto->password,
+            'role' => $dto->role,
+        ]);
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
@@ -31,9 +30,9 @@ class AuthService
 
     public function login(LoginDTO $dto): array
     {
-        if (!Auth::attempt([
+        if (! Auth::attempt([
             'email' => $dto->email,
-            'password' => $dto->password
+            'password' => $dto->password,
         ])) {
             throw ValidationException::withMessages([
                 'email' => ['Invalid credentials'],
@@ -42,7 +41,6 @@ class AuthService
 
         $user = Auth::user();
 
-  
         $user->tokens()->delete();
 
         $token = $user->createToken('auth_token')->plainTextToken;
@@ -53,17 +51,16 @@ class AuthService
         ];
     }
 
-    public function logout($user): void
+    public function logout(User $user): void
     {
-        $user->currentAccessToken()->delete();
+        $user->currentAccessToken()?->delete();
     }
 
-    public function refreshToken($user): string
+    public function refreshToken(User $user): string
     {
-   
+
         $user->currentAccessToken()->delete();
 
-  
         return $user->createToken('auth_token')->plainTextToken;
     }
 

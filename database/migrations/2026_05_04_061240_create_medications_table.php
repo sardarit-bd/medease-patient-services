@@ -13,30 +13,30 @@ return new class extends Migration
 
             $table->uuid('patient_id');
             $table->foreign('patient_id')
-                  ->references('id')->on('patient_profiles')
-                  ->onDelete('cascade');
+                ->references('id')->on('patient_profiles')
+                ->onDelete('cascade');
 
             $table->uuid('prescription_id')->nullable();
             $table->foreign('prescription_id')
-                  ->references('id')->on('prescriptions')
-                  ->onDelete('set null');
+                ->references('id')->on('prescriptions')
+                ->onDelete('set null');
 
             $table->uuid('prescribed_by')->nullable();
             $table->foreign('prescribed_by')
-                  ->references('id')->on('users')
-                  ->onDelete('set null');
+                ->references('id')->on('users')
+                ->onDelete('set null');
 
-            $table->string('name', 255);              
-            $table->string('dci', 255)->nullable();   
+            $table->string('name', 255);
+            $table->string('dci', 255)->nullable();
             $table->string('form', 100)->nullable();
             $table->string('dosage', 100)->nullable();
-      
+
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
             $table->boolean('is_active')->default(true);
 
-            $table->timestamps();    
-            $table->softDeletes();   
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 

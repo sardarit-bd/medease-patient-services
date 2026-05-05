@@ -2,13 +2,13 @@
 
 namespace App\Modules\User\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Helpers\ApiResponse;
-use Illuminate\Http\Request;
-use App\Modules\User\Services\UserService;
+use App\Http\Controllers\Controller;
+use App\Modules\User\DTOs\UpdateProfileDTO;
 use App\Modules\User\Requests\UpdateProfileRequest;
 use App\Modules\User\Requests\UploadPhotoRequest;
-use App\Modules\User\DTOs\UpdateProfileDTO;
+use App\Modules\User\Services\UserService;
+use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
@@ -23,7 +23,7 @@ class UserController extends Controller
 
     public function updateProfile(UpdateProfileRequest $request)
     {
-        $dto     = UpdateProfileDTO::fromArray($request->validated());
+        $dto = UpdateProfileDTO::fromArray($request->validated());
         $profile = $this->service->updateProfile($request->user(), $dto);
 
         return ApiResponse::success($profile, 'Profile updated successfully');

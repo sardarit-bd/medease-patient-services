@@ -13,24 +13,24 @@ return new class extends Migration
 
             $table->uuid('medication_id');
             $table->foreign('medication_id')
-                  ->references('id')->on('medications')
-                  ->onDelete('cascade');
+                ->references('id')->on('medications')
+                ->onDelete('cascade');
 
             $table->uuid('patient_id');
             $table->foreign('patient_id')
-                  ->references('id')->on('patient_profiles')
-                  ->onDelete('cascade');
+                ->references('id')->on('patient_profiles')
+                ->onDelete('cascade');
 
-            $table->float('current_quantity');           
+            $table->float('current_quantity');
             $table->string('unit', 50)->nullable();
-         
-            $table->date('expiry_date')->nullable();     
+
+            $table->date('expiry_date')->nullable();
             $table->integer('low_stock_threshold')->default(5);
-         
+
             $table->timestamp('last_updated')->useCurrent();
 
-            $table->timestamps();    
-            $table->softDeletes();   
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 

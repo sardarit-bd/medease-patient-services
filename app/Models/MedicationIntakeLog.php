@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Model;
 
 class MedicationIntakeLog extends Model
 {
@@ -21,7 +21,7 @@ class MedicationIntakeLog extends Model
 
     protected $casts = [
         'scheduled_at' => 'datetime',
-        'taken_at'     => 'datetime',
+        'taken_at' => 'datetime',
     ];
 
     public function schedule()

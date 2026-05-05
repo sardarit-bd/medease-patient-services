@@ -12,9 +12,9 @@ return new class extends Migration
             $table->uuid('id')->primary()->default(DB::raw('(UUID())'));
             $table->uuid('user_id')->unique();
             $table->foreign('user_id')
-                  ->references('id')
-                  ->on('users')
-                  ->onDelete('cascade');
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade');
             $table->string('first_name', 100);
             $table->string('last_name', 100);
             $table->date('date_of_birth')->nullable();
@@ -22,7 +22,7 @@ return new class extends Migration
                 'male',
                 'female',
                 'other',
-                'prefer_not_to_say'
+                'prefer_not_to_say',
             ])->nullable();
             $table->string('blood_type', 5)->nullable();
             $table->float('height')->nullable();

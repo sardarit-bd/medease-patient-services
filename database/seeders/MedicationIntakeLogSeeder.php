@@ -10,7 +10,7 @@ class MedicationIntakeLogSeeder extends Seeder
 {
     public function run(): void
     {
-        $patient   = DB::table('patient_profiles')->value('id');
+        $patient = DB::table('patient_profiles')->value('id');
         $schedules = DB::table('medication_schedule')->pluck('id');
 
         // Today's date for dashboard context
@@ -18,48 +18,48 @@ class MedicationIntakeLogSeeder extends Seeder
 
         $logs = [
             [
-                'id'           => Str::uuid(),
-                'schedule_id'  => $schedules[0],        // Helicidine 09:00
-                'patient_id'   => $patient,
-                'scheduled_at' => $today . ' 09:00:00',
-                'taken_at'     => $today . ' 09:05:00', // ✅ taken on time
-                'status'       => 'taken',
-                'notes'        => null,
-                'created_at'   => now(),
-                'updated_at'   => now(),
+                'id' => Str::uuid(),
+                'schedule_id' => $schedules[0],        // Helicidine 09:00
+                'patient_id' => $patient,
+                'scheduled_at' => $today.' 09:00:00',
+                'taken_at' => $today.' 09:05:00', // ✅ taken on time
+                'status' => 'taken',
+                'notes' => null,
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
-                'id'           => Str::uuid(),
-                'schedule_id'  => $schedules[1],        // Asturgil 09:00
-                'patient_id'   => $patient,
-                'scheduled_at' => $today . ' 09:00:00',
-                'taken_at'     => $today . ' 09:45:00', // ⏰ taken late (delayed)
-                'status'       => 'delayed',
-                'notes'        => 'Pris en retard ce matin',
-                'created_at'   => now(),
-                'updated_at'   => now(),
+                'id' => Str::uuid(),
+                'schedule_id' => $schedules[1],        // Asturgil 09:00
+                'patient_id' => $patient,
+                'scheduled_at' => $today.' 09:00:00',
+                'taken_at' => $today.' 09:45:00', // ⏰ taken late (delayed)
+                'status' => 'delayed',
+                'notes' => 'Pris en retard ce matin',
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
-                'id'           => Str::uuid(),
-                'schedule_id'  => $schedules[2],        // Doliprane 12:30
-                'patient_id'   => $patient,
-                'scheduled_at' => $today . ' 12:30:00',
-                'taken_at'     => null,                 // ❌ not taken yet (pending)
-                'status'       => 'missed',
-                'notes'        => null,
-                'created_at'   => now(),
-                'updated_at'   => now(),
+                'id' => Str::uuid(),
+                'schedule_id' => $schedules[2],        // Doliprane 12:30
+                'patient_id' => $patient,
+                'scheduled_at' => $today.' 12:30:00',
+                'taken_at' => null,                 // ❌ not taken yet (pending)
+                'status' => 'missed',
+                'notes' => null,
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
-                'id'           => Str::uuid(),
-                'schedule_id'  => $schedules[3],        // Levothyrox 18:00
-                'patient_id'   => $patient,
-                'scheduled_at' => $today . ' 18:00:00',
-                'taken_at'     => null,                 // ⏭️ skipped intentionally
-                'status'       => 'skipped',
-                'notes'        => 'Pas pris ce soir - voyage',
-                'created_at'   => now(),
-                'updated_at'   => now(),
+                'id' => Str::uuid(),
+                'schedule_id' => $schedules[3],        // Levothyrox 18:00
+                'patient_id' => $patient,
+                'scheduled_at' => $today.' 18:00:00',
+                'taken_at' => null,                 // ⏭️ skipped intentionally
+                'status' => 'skipped',
+                'notes' => 'Pas pris ce soir - voyage',
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
         ];
 

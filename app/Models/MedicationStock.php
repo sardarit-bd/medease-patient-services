@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class MedicationStock extends Model
@@ -19,10 +19,10 @@ class MedicationStock extends Model
     ];
 
     protected $casts = [
-        'current_quantity'    => 'float',
+        'current_quantity' => 'float',
         'low_stock_threshold' => 'integer',
-        'expiry_date'         => 'date',
-        'last_updated'        => 'datetime',
+        'expiry_date' => 'date',
+        'last_updated' => 'datetime',
     ];
 
     public function medication()

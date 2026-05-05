@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class VaccinationRecord extends Model
@@ -29,7 +29,7 @@ class VaccinationRecord extends Model
     {
         return [
             'vaccination_date' => 'date',
-            'documents'        => 'array',
+            'documents' => 'array',
         ];
     }
 

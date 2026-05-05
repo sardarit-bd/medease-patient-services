@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class MedicationSchedule extends Model
@@ -19,7 +19,7 @@ class MedicationSchedule extends Model
     ];
 
     protected $casts = [
-        'days'     => 'array',
+        'days' => 'array',
         'quantity' => 'float',
     ];
 

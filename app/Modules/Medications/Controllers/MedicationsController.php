@@ -2,11 +2,12 @@
 
 namespace App\Modules\Medications\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Helpers\ApiResponse;
-use Illuminate\Http\Request;
-use App\Modules\Medications\Services\MedicationsService;
+use App\Http\Controllers\Controller;
 use App\Modules\Medications\Requests\TakeMedicationRequest;
+use App\Modules\Medications\Services\MedicationsService;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Request;
 
 class MedicationsController extends Controller
 {
@@ -19,7 +20,6 @@ class MedicationsController extends Controller
         return ApiResponse::success($data, 'Today\'s medications fetched successfully');
     }
 
-
     public function take(TakeMedicationRequest $request)
     {
         try {
@@ -27,7 +27,7 @@ class MedicationsController extends Controller
 
             return ApiResponse::success($data, 'Medication intake logged successfully');
 
-        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+        } catch (ModelNotFoundException $e) {
             return ApiResponse::error('Schedule not found or does not belong to you.', 403);
 
         } catch (\Exception $e) {
@@ -35,14 +35,12 @@ class MedicationsController extends Controller
         }
     }
 
-
     public function observance(Request $request)
     {
         $data = $this->service->observance($request->user());
 
         return ApiResponse::success($data, 'Observance calculated successfully');
     }
-
 
     public function vaccination(Request $request)
     {

@@ -13,24 +13,23 @@ return new class extends Migration
 
             $table->uuid('schedule_id');
             $table->foreign('schedule_id')
-                  ->references('id')->on('medication_schedule')
-                  ->onDelete('cascade');
+                ->references('id')->on('medication_schedule')
+                ->onDelete('cascade');
 
             $table->uuid('patient_id');
             $table->foreign('patient_id')
-                  ->references('id')->on('patient_profiles')
-                  ->onDelete('cascade');
+                ->references('id')->on('patient_profiles')
+                ->onDelete('cascade');
 
-            $table->timestamp('scheduled_at');           
-            $table->timestamp('taken_at')->nullable();   
+            $table->timestamp('scheduled_at');
+            $table->timestamp('taken_at')->nullable();
 
             $table->string('status', 20);
 
-
             $table->text('notes')->nullable();
 
-            $table->timestamps(); 
-    
+            $table->timestamps();
+
         });
     }
 

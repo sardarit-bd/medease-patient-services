@@ -12,22 +12,22 @@ return new class extends Migration
             $table->uuid('id')->primary()->default(DB::raw('(UUID())'));
             $table->uuid('patient_id');
             $table->foreign('patient_id')
-                  ->references('id')
-                  ->on('patient_profiles')
-                  ->onDelete('cascade');
+                ->references('id')
+                ->on('patient_profiles')
+                ->onDelete('cascade');
             $table->string('vaccine_name', 255);
             $table->enum('vaccine_category', [
                 'mandatory',
                 'recommended',
                 'specific',
-                'other'
+                'other',
             ])->nullable();
             $table->text('other_vaccine')->nullable();
             $table->enum('dose_type', [
                 'first',
                 'second',
                 'booster',
-                'complete_schedule'
+                'complete_schedule',
             ])->nullable();
             $table->date('vaccination_date')->nullable();
             $table->string('professional_name', 255)->nullable();

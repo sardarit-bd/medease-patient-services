@@ -12,16 +12,16 @@ return new class extends Migration
             $table->uuid('id')->primary()->default(DB::raw('(UUID())'));
             $table->uuid('user_id');
             $table->foreign('user_id')
-                  ->references('id')
-                  ->on('users')
-                  ->onDelete('cascade');
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade');
             $table->enum('type', [
                 'medication',
                 'appointment',
                 'ai_flag',
                 'emergency',
                 'prevention',
-                'system'
+                'system',
             ]);
             $table->string('title', 255);
             $table->text('message');
@@ -29,7 +29,7 @@ return new class extends Migration
                 'low',
                 'medium',
                 'high',
-                'critical'
+                'critical',
             ])->default('low');
             $table->boolean('is_read')->default(false);
             $table->string('action_url', 500)->nullable();

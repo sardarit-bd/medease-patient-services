@@ -1,11 +1,12 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Modules\Auth\Controllers\AuthController;
+use Illuminate\Support\Facades\Route;
 
 Route::prefix('auth')->group(function () {
 
-    Route::post('/register', [AuthController::class, 'register']);
+    Route::post('/patient-register', [AuthController::class, 'patient_register']);
+    Route::post('/professional-register', [AuthController::class, 'professional_register']);
     Route::post('/login', [AuthController::class, 'login']);
     Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
 

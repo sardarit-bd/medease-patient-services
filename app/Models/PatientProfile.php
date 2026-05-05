@@ -2,9 +2,8 @@
 
 namespace App\Models;
 
-use App\Models\User;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class PatientProfile extends Model
@@ -39,8 +38,8 @@ class PatientProfile extends Model
     {
         return [
             'date_of_birth' => 'date',
-            'height'        => 'float',
-            'weight'        => 'float',
+            'height' => 'float',
+            'weight' => 'float',
         ];
     }
 

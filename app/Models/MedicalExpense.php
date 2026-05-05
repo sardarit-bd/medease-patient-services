@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class MedicalExpense extends Model
@@ -24,10 +24,10 @@ class MedicalExpense extends Model
     ];
 
     protected $casts = [
-        'amount'           => 'float',
-        'reimbursed'       => 'float',
+        'amount' => 'float',
+        'reimbursed' => 'float',
         'remaining_charge' => 'float',
-        'expense_date'     => 'date',
+        'expense_date' => 'date',
     ];
 
     public function patient()

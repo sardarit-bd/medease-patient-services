@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Medication extends Model
@@ -17,9 +17,9 @@ class Medication extends Model
     ];
 
     protected $casts = [
-        'is_active'  => 'boolean',
+        'is_active' => 'boolean',
         'start_date' => 'date',
-        'end_date'   => 'date',
+        'end_date' => 'date',
     ];
 
     public function patient()

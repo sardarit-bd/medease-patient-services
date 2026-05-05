@@ -13,13 +13,13 @@ return new class extends Migration
 
             $table->uuid('patient_id');
             $table->foreign('patient_id')
-                  ->references('id')->on('patient_profiles')
-                  ->onDelete('cascade');
+                ->references('id')->on('patient_profiles')
+                ->onDelete('cascade');
 
             $table->uuid('prescribed_by')->nullable();
             $table->foreign('prescribed_by')
-                  ->references('id')->on('users')
-                  ->onDelete('set null');
+                ->references('id')->on('users')
+                ->onDelete('set null');
 
             $table->date('issued_date');
             $table->date('renewal_date')->nullable();     // "renouvellement dans 8 jours"

@@ -15,8 +15,8 @@ class TakeMedicationRequest extends FormRequest
     {
         return [
             'schedule_id' => ['required', 'uuid', 'exists:medication_schedule,id'],
-            'status'      => ['required', 'in:taken,missed,delayed,skipped'],
-            'notes'       => ['sometimes', 'nullable', 'string', 'max:500'],
+            'status' => ['required', 'in:taken,missed,delayed,skipped'],
+            'notes' => ['sometimes', 'nullable', 'string', 'max:500'],
         ];
     }
 
@@ -24,7 +24,7 @@ class TakeMedicationRequest extends FormRequest
     {
         return [
             'schedule_id.exists' => 'Medication schedule not found.',
-            'status.in'          => 'Status must be one of: taken, missed, delayed, skipped.',
+            'status.in' => 'Status must be one of: taken, missed, delayed, skipped.',
         ];
     }
 }
