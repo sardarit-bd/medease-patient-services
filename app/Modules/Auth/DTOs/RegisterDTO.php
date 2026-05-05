@@ -2,7 +2,7 @@
 
 namespace App\Modules\Auth\DTOs;
 
-class patientRegisterDTO
+class registerDTO
 {
     public function __construct(
         public string $email,
