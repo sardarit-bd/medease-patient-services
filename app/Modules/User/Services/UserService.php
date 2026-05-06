@@ -6,6 +6,8 @@ use App\Models\PatientProfile;
 use App\Models\User;
 use App\Modules\User\DTOs\UpdateProfileDTO;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Filesystem\FilesystemAdapter;
+use Illuminate\Http\UploadedFile;
 
 class UserService
 {
@@ -24,19 +26,21 @@ class UserService
         return $profile->fresh();
     }
 
-    public function uploadPhoto(User $user, $file): PatientProfile
+    public function uploadPhoto(User $user, UploadedFile $file): PatientProfile
     {
         $profile = PatientProfile::firstOrNew(['user_id' => $user->id]);
 
+        /** @var FilesystemAdapter $disk */
+        $disk = Storage::disk('public');
+
         if ($profile->photo_url) {
-            $oldPath = str_replace('/storage/', 'public/', $profile->photo_url);
-            Storage::delete($oldPath);
+            $oldPath = str_replace('/storage/', '', $profile->photo_url);
+            $disk->delete($oldPath);
         }
 
-        $path = $file->store("public/profile-photos/{$user->id}");
-        $url = Storage::url($path);
+        $path = $file->store("profile-photos/{$user->id}", 'public');
 
-        $profile->photo_url = $url;
+        $profile->photo_url = $disk->url($path);
         $profile->save();
 
         return $profile->fresh();

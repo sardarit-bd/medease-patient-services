@@ -3,7 +3,7 @@
 use App\Modules\User\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware('auth:sanctum')->prefix('user')->group(function () {
+Route::middleware('auth:sanctum')->prefix('user/patient')->group(function () {
 
     Route::get('/profile', [UserController::class, 'getProfile']);
     Route::patch('/profile', [UserController::class, 'updateProfile']);

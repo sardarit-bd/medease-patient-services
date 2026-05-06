@@ -18,16 +18,21 @@ class PatientProfile extends Model
         'last_name',
         'date_of_birth',
         'gender',
-        'blood_type',
-        'height',
-        'weight',
-        'photo_url',
-        'social_security_number',
+        'nationality',
+        'language',
+        'phone',
+        'email',
         'address',
         'city',
         'postal_code',
         'country',
-        'phone',
+        'blood_group',
+        'height_cm',
+        'weight_kg',
+        'imc',
+        'dob_of_height_and_weight',
+        'profile_completed',
+        'photo_url',
     ];
 
     protected $hidden = [
@@ -37,9 +42,12 @@ class PatientProfile extends Model
     protected function casts(): array
     {
         return [
-            'date_of_birth' => 'date',
-            'height' => 'float',
-            'weight' => 'float',
+            'date_of_birth'            => 'date',
+            'dob_of_height_and_weight' => 'date',
+            'height_cm'                => 'decimal:2',
+            'weight_kg'                => 'decimal:2',
+            'imc'                      => 'integer',
+            'profile_completed'        => 'boolean',
         ];
     }
 
