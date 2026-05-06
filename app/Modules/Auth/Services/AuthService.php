@@ -148,18 +148,18 @@ class AuthService
 
     private function validateResetCode(User $user, string $code): void
     {
+
+        if ((string) $user->password_reset_code !== $code || ! $user->password_reset_code) {
+            throw ValidationException::withMessages([
+                'code' => ['Invalid reset code.'],
+            ]);
+        }
         if (
             ! $user->password_reset_code_expires_at ||
             now()->gt($user->password_reset_code_expires_at)
         ) {
             throw ValidationException::withMessages([
                 'code' => ['Reset code has expired.'],
-            ]);
-        }
-
-        if ((string) $user->password_reset_code !== $code) {
-            throw ValidationException::withMessages([
-                'code' => ['Invalid reset code.'],
             ]);
         }
     }
