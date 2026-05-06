@@ -4,12 +4,21 @@ namespace App\Mail;
 
 use Illuminate\Mail\Mailable;
 
-
-class PasswordResetCodeMail extends Mailable
+class VerificationCodeMail extends Mailable
 {
+    public string $code;
+
+    public function __construct(string $code)
+    {
+        $this->code = $code;
+    }
+
     public function build()
     {
-        return $this->subject('Password Reset Code')
-            ->view('emails.password-reset-code');
+        return $this->subject('Verification Code')
+            ->view('emails.verify-code')
+            ->with([
+                'code' => $this->code,
+            ]);
     }
 }

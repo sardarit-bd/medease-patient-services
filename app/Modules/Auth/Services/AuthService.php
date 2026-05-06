@@ -91,7 +91,7 @@ class AuthService
         }
 
         $user = Auth::user();
-
+        /** @var \App\Models\User $user */
         $user->tokens()->delete();
 
         $token = $user->createToken('auth_token')->plainTextToken;

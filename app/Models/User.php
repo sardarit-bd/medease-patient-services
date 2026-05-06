@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Modules\PatientProfile\Models\PatientProfile;
+use App\Models\PatientProfile;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -18,6 +18,26 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
+    protected $fillable = [
+        'email',
+        'password',
+        'role',
+        'email_verified_at',
+        'verification_code',
+        'verification_code_expires_at',
+        'password_reset_code',
+        'password_reset_code_expires_at',
+    ];
+
+    protected $hidden = [
+        'password',
+        'remember_token',
+        'verification_code',
+        'verification_code_expires_at',
+        'password_reset_code',
+        'password_reset_code_expires_at',
+    ];
+
     protected function casts(): array
     {
         return [
@@ -29,5 +49,13 @@ class User extends Authenticatable
     public function patientProfile(): HasOne
     {
         return $this->hasOne(PatientProfile::class);
+    }
+
+    /**
+     * Help IDE understand token type
+     */
+    public function currentAccessToken(): ?\Laravel\Sanctum\PersonalAccessToken
+    {
+        return $this->accessToken;
     }
 }
