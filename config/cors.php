@@ -7,10 +7,10 @@ return [
     'allowed_methods' => ['*'],
 
     'allowed_origins' => [
-        'http://192.168.25.188:3000/*',
-        'http://localhost:3000/*',
-        'http://127.0.0.1:3000/*',
-        "https://med-ease-frontend.vercel.app/*"
+        'http://192.168.25.188:3000',
+        'http://localhost:3000',
+        'http://127.0.0.1:3000',
+        'https://med-ease-frontend.vercel.app'
     ],
 
     'allowed_origins_patterns' => [],
