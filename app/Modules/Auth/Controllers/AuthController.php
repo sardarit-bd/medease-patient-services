@@ -31,8 +31,25 @@ class AuthController extends Controller
     public function login(LoginRequest $request)
     {
         $dto = LoginDTO::fromArray($request->validated());
+
         $data = $this->service->login($dto);
-        return ApiResponse::success($data, 'Login successful');
+
+        return ApiResponse::success(
+            [
+                'user' => $data['user'],
+            ],
+            'Login successful'
+        )->cookie(
+            'token',
+            $data['token'],
+            60 * 24 * 7,
+            '/',
+            null,
+            false,
+            true,
+            false,
+            'Lax'
+        );
     }
 
 
