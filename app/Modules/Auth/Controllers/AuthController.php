@@ -5,7 +5,7 @@ namespace App\Modules\Auth\Controllers;
 use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Modules\Auth\DTOs\LoginDTO;
-use App\Modules\Auth\DTOs\registerDTO;
+use App\Modules\Auth\DTOs\RegisterDTO;
 use App\Modules\Auth\Requests\ForgotPasswordRequest;
 use App\Modules\Auth\Requests\LoginRequest;
 use App\Modules\Auth\Requests\RegisterRequest;
