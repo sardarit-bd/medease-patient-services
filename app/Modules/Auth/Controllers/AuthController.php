@@ -27,29 +27,29 @@ class AuthController extends Controller
         return ApiResponse::success($data, 'User registered successfully');
     }
 
-
     public function login(LoginRequest $request)
     {
         $dto = LoginDTO::fromArray($request->validated());
 
         $data = $this->service->login($dto);
 
-        return ApiResponse::success(
-            [
-                'user' => $data['user'],
-            ],
-            'Login successful'
-        )->cookie(
-            'token',
-            $data['token'],
-            60 * 24 * 7,
-            '/',
-            null,
-            false,
-            true,
-            false,
-            'Lax'
-        );
+        $token = $data['access_token'];
+
+        return ApiResponse::success([
+            'user' => $data['user'],
+            'access_token' => $token,
+        ], 'Login successful')
+            ->cookie(
+                'token',
+                $token,
+                60 * 24 * 7,
+                '/',
+                null,
+                true,
+                true,
+                false,
+                'None'
+            );
     }
 
 

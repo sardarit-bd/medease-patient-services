@@ -91,14 +91,14 @@ class AuthService
         }
 
         $user = Auth::user();
-        /** @var \App\Models\User $user */
+
         $user->tokens()->delete();
 
-        $token = $user->createToken('auth_token')->plainTextToken;
+        $accessToken = $user->createToken('auth_token')->plainTextToken;
 
         return [
             'user' => $user,
-            'token' => $token,
+            'access_token' => $accessToken,
         ];
     }
 
